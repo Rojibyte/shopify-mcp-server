@@ -48,7 +48,7 @@ flowchart LR
 ### 2. Install and configure
 
 ```bash
-git clone https://github.com/<your-username>/shopify-mcp-server.git
+git clone https://github.com/Rojibyte/shopify-mcp-server.git
 cd shopify-mcp-server
 npm install
 cp .env.example .env   # fill in your values
@@ -91,8 +91,6 @@ npm run build
 
 ## What broke (and what I learned)
 
-<!-- Rewrite these in your own words — interviewers will ask about them. -->
-
 - **`app_not_installed` (400).** Creating an app in the Dev Dashboard doesn't install it on the store. Shopify's error was an HTML page, which is why I added error-code parsing.
 - **TypeScript can't check API responses.** In my hand-written `count_products` tool, the GraphQL query and its response type got out of sync and it still compiled. A response type is a promise you make, not something TypeScript verifies.
 - **"Variable `$product` was not provided."** I passed the mutation but not the variables object. GraphQL variables travel separately from the query text, like a parameterised SQL query.
@@ -103,13 +101,10 @@ npm run build
 
 ## What I'd do differently
 
-<!-- Edit to reflect your own view. -->
-
-- **Skip gift cards in `check_inventory`** using Shopify's `isGiftCard` field.
-- **Add `outputSchema` and `structuredContent` to the MCP tools themselves**, so clients get typed results and not just JSON text.
-- **Write automated tests** for the tool handlers, with a mocked Shopify client, instead of only testing manually in the Inspector.
-- **Move to MCP TypeScript SDK v2**, which implements the 2026-07-28 spec.
-- **For large catalogs, use Shopify bulk operations** in `check_inventory` instead of scanning the 50 lowest-stock products.
+- **Sanitize the HTML.** I would create allowed tags for the descriptionHtml by doing this, It will flag and remove unnecessary tags (script, img, links) those tags which can cause anything from broken layouts to a security hole.
+- **Backup or Revision History.** I would add in a backup or revision history based on my experience from CMS platforms like Duda and Webflow. Adding Revision History lets me rollback to a previous version if the newly published version has some content that got added that I didn't want or I want to rollback to a previous version.
+- **How the build went.** As I didn't have experience in GraphQL and MCP. I did some hands-on coding myself to understand how query and mutations works. I noticed that if I did a query working in a GraphiQL first then write a tool, I could've saved some time. As I keep building tools or MCPs, I can gradually improve my workflow.
+- **Add Automated Test.** I've thought of adding an Automated test, I got this idea from an In an n8n flow I built, a form submission sent audio via webhook → transcribed it → checked for slurs → saved to PostgreSQL → displayed the result. I tested steps like the slur check with fixed sample data. I'd do the same here: use a fake Shopify client to test the guardrails automatically, so the HTML sanitizer strips <script>, saves without confirm are rejected, and userErrors come back as errors instead of a false success.
 
 ## Tech
 
