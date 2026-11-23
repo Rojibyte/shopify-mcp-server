@@ -1,0 +1,33 @@
+{
+  "name": "shopify-mcp-server",
+  "version": "0.1.0",
+  "description": "MCP server that connects Claude to a Shopify store via the Admin GraphQL API",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsx src/index.ts",
+    "start": "node dist/index.js",
+    "typecheck": "tsc --noEmit",
+    "inspect": "npx @modelcontextprotocol/inspector node dist/index.js",
+    "agent": "node dist/agent.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "@anthropic-ai/sdk": "^1.12.0",
+    "@modelcontextprotocol/sdk": "^1.32.2",
+    "zod": "^4.6.7"
+  },
+  "devDependencies": {
+    "@types/node": "^26.6.6",
+    "tsx": "^4.23.15",
+    "typescript": "^7.0.2"
+  },
+  "type": "module",
+  "bin": {
+    "shopify-mcp-server": "dist/index.js"
+  },
+  "engines": {
+    "node": ">=20.12"
+  }
+}
